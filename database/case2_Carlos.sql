@@ -7,4 +7,6 @@ LEFT JOIN krs ON term.kode_term = krs.kode_term
 LEFT JOIN mahasiswa ON krs.StudentID = mahasiswa.StudentID
 GROUP BY term.tahun_ajar, term.semester
 
-#GITHUB LINK = 
+#GITHUB LINK = https://github.com/Invirent/Case2_terms.git
+#Name = Carlos
+#NIM = 03081200004
