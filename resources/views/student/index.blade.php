@@ -15,58 +15,93 @@
     <title>Student Terms</title>
 </head>
 <body>
-    <table class="table table-striped">
-        <tr>
-            <th>
-                No.
-            </th>
-            <th>
-                Year Term
-            </th>
-            <th>
-                Semester
-            </th>
-            <th>
-
-            </th>
-        </tr>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Carlos</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="#">Lihat KRS</a>
+              <a class="nav-link" href="#">Profil</a>
+              <a class="nav-link" href="#">Log Out</a>
+            </div>
+          </div>
+        </div>
+      </nav>
         <?php
-            $term_data = DB::select('
-            SELECT
-                term.kode_term AS id,
-                term.tahun_ajar AS year_term,
-                term.semester AS semester,
-                COUNT(mahasiswa.StudentID) as student_count
-            FROM term
-            LEFT JOIN krs ON term.kode_term = krs.kode_term
-            LEFT JOIN mahasiswa ON krs.StudentID = mahasiswa.StudentID
-            GROUP BY term.kode_term ,term.tahun_ajar, term.semester
-            ');
-            $no = 1;
-            foreach($term_data as $data){
-                $id = $data->id;
-                $year = $data->year_term;
-                $semester = $data->semester;
-                $student_count = $data->student_count;
+            $student_data = DB::select("SELECT * FROM student_data WHERE student_id = '03081200004'");
+            foreach($student_data as $data){
+                $student_id = $data->student_id;
+                $name = $data->nama;
+                $term = $data->term;
+                $total_sks = $data->total_sks;
                 echo "
-                <tr>
-                    <td>
-                        $no
-                    </td>
-                    <td>
-                        $year
-                    </td>
-                    <td>
-                        $semester
-                    </td>
-                    <td>
-                        <a href='/term/id=$id'>Detail</a>
-                    </td>
-                </tr>
+                    <div class='container'>
+                        <div class='row'>
+                            <div class='col-2'>
+                                Nama: 
+                            </div>
+                            <div class='col-4'>
+                                $name
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-2'>
+                                NIM: 
+                            </div>
+                            <div class='col-4'>
+                                $student_id
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-2'>
+                                Term: 
+                            </div>
+                            <div class='col-4'>
+                                $term
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-2'>
+                                Total SKS: 
+                            </div>
+                            <div class='col-4'>
+                                $total_sks
+                            </div>
+                        </div>
+                    </div>
                 ";
-                $no++;
             };
         ?>
-    </table>
+
+        <h6>Mata Kuliah yang diambil</h6>
+        <table class="table table-striped">
+            <tr>
+                <th>No. </th>
+                <th>Kode Mata Kuliah</th>
+                <th>Nama Mata Kuliah</th>
+                <th>SKS</th>
+            </tr>
+            <?php
+                $detail_major_data = DB::select("SELECT * FROM student_detail_major WHERE student_id = '03081200004'");
+                $no = 1;
+                foreach($detail_major_data as $major){
+                    $major_code = $major->kode;
+                    $major_name = $major->name;
+                    $sks = $major->sks;
+                    echo "
+                        <tr>
+                            <td>$no</td>
+                            <td>$major_code</td>
+                            <td>$major_name</td>
+                            <td>$sks</td>
+                        </tr>
+                    ";
+                    $no++;
+                }
+            ?>
+        </table>
 </body>
 </html>
